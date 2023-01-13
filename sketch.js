@@ -33,6 +33,7 @@ function preload()
 
 var isBluBeingPetted = false;
 var pets = 0;
+var mostPets = 0;
 
 var hitboxToggle;
 
@@ -57,7 +58,8 @@ function setup()
   hitboxToggle.style( "color: white;" );
   
   // Retrieve pets from cookies
-  pets = getItem( "pets" ) ? getItem( "pets" ) : 0;
+  var t = getItem( "mostPets" );
+  mostPets = t ? t : 0;
 }
 
 function draw()
@@ -169,7 +171,11 @@ function updateScore()
       // Increment pets, reset counter and store pets
       pets++;
       counter = 0;
-      storeItem( "pets", pets );
+      if ( pets > mostPets )
+      {
+        mostPets = pets;
+        storeItem( "mostPets", mostPets );
+      }
     }
     // Otherwise increment the counter
     // at a rate independent of fps
@@ -177,7 +183,7 @@ function updateScore()
   }
   
   fill( 0 );
-  text( `Pets: ${pets}`, 0, 0 );
+  text( `Pets: ${pets}\nMost pets: ${mostPets}`, 0, 0 );
 }
 
 function renderDebugHitbox()
